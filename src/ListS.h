@@ -38,7 +38,7 @@ public:
 	iterator begin() const;
 	iterator end() const;
 	bool IsEmpty() const;
-	T& operator[](const std::size_t& v) const;
+	T& operator[](const int& v) const;
 	
 	
 	
@@ -116,60 +116,73 @@ void ListS<T>::Add(ldata e, position p)
 	if(p < 0 ||  p > BUFFER_SIZE)
 		throw "Valore non ammesso !";
 
+	static int index = 0;
+	
 	
 	if (m_size == 0)
 	{
-		//m_freeList = &s_stack[p];
-		s_stack[p].elem = e;
-		s_stack[p].succ = p + 1;
-		s_stack[p+1].succ = -1;
+		
+		
+		s_stack[p-1].succ = p ;
+		s_stack[p].succ = -1;
 		m_start = p;
 
 	}
 	else if (m_size < BUFFER_SIZE)
 	{
-		int index = 0;
 		GetFreeIndex(index);
 
 		iterator next = CheckPosition(p);
-		iterator iter = this->end();
-			
+ 		iterator iter = this->end();
 
-		if (next == nullptr)
+
+		if (next != nullptr)
 		{
+
+			m_freeList->succ = next->succ;
+			next->succ = index;
+			
+			/*
 			if (p >= iter->succ)
 			{
 
-				s_stack[iter->succ].succ = p;
+			s_stack[iter->succ].succ = p;
 
-				s_stack[p].succ = -1;
+			s_stack[p].succ = -1;
 
 
 			}
 			else
 			{
 
-				//next->succ = -1;
-				s_stack[p].succ = iter->succ;
-				iter->succ = p;
+			//next->succ = -1;
+			s_stack[p].succ = iter->succ;
+			iter->succ = p;
 
 			}
 
 			s_stack[p].elem = e;
+			}
+			else
+			{
+			m_freeList->succ = next->succ;
+			next->succ = index;
+
+			//m_freeList->elem = e;
+
+			}*/
+
+
 		}
 		else
-			{
-				m_freeList->succ = next->succ;
-				next->succ = index;
-
-				m_freeList->elem = e;
-
-			}
-		
-	  
+		{
+			iter->succ = index;
+			m_freeList->succ = -1;
 		}
 
+	}
 
+	m_freeList->elem = e;
 	m_size++;
 
 }
@@ -178,7 +191,7 @@ template<class T>
 void ListS<T>::Add(ldata e)
 {
 
-	Add(e, m_size - 1);
+	Add(e, m_size+1);
 }
 
 template<class T>
@@ -192,23 +205,28 @@ void ListS<T>::RemoveAt(position p)
 	{
 		m_start = s_stack[m_start].succ;
 		s_stack[p].succ = -1;
+		m_freeList = &s_stack[p];
 		
 
 	}
 	else
 	{
-		int _t;
+		int _t, index = 1;
 		
 		ListS<T>::iterator iter = this->begin();
+		iterator back = iter;
 
-		for (; iter->succ != p && iter->succ != -1; iter = &s_stack[iter->succ])
-		{ }
+		for (; index < p-1 && iter->succ != -1; iter = &s_stack[iter->succ])
+		{ 
+			index++;
+			back = iter;
+		}
 
-		if (iter->succ == p)
+		if (index == p-1)
 		{
 			_t = iter->succ;
-			iter->succ = iter[iter->succ].succ;
-			iter[_t].succ = -1;
+			back->succ = s_stack[iter->succ].succ-1;
+			iter->succ = -1;
 
 			m_size--;
 		}	
@@ -268,7 +286,7 @@ typename ListS<T>::iterator ListS<T>::end() const
 	{
 		
 		
-		while (s_stack[iter->succ].succ != -1)
+		while (iter->succ != -1)
 		{
 			
 			iter = &s_stack[iter->succ];
@@ -289,12 +307,12 @@ bool ListS<T>::IsEmpty() const
 }
 
 template<class T>
-T& ListS<T>::operator[](const std::size_t& v) const
+T& ListS<T>::operator[](const int& v) const
 {
 	iterator it = this->begin();
 	int index = m_start;
 
-	for (; it->succ != -1 && index != v; it = &s_stack[it->succ])
+	for (; it->succ != -1 && index <= v-1; it = &s_stack[it->succ])
 	{
 		index = it->succ;
 	}
@@ -306,14 +324,15 @@ T& ListS<T>::operator[](const std::size_t& v) const
 template<class T>
 typename ListS<T>::iterator ListS<T>::GetFreeIndex(position& v)
 {
-	iterator it = s_stack;
+	iterator it = &s_stack[v];
 
 	do 
 	{
 		++it;
-		++v;
+		
 	} while (it->succ != -1);
 
+	v++;
 
 
 
@@ -328,26 +347,32 @@ typename ListS<T>::iterator ListS<T>::CheckPosition(position& p)
 {
 	iterator iter = nullptr;
 	iterator itend = this->end();
+	int index = 1;
 
-	if (m_size > 1)
+	if (m_size > 1 && p-1 < m_size)
 	{
 		iterator it = this->begin();
+		iterator back = iter;
 
-		while (!(it->succ == p) && ((it = &s_stack[it->succ]) != itend))
+		while (index < p-1)
 		{
-
 			
+			
+			back = it;
+			it = &s_stack[it->succ];
+			++index;
 
 		}
 
-		if (it->succ == p)
-			iter = it;
+		
+			iter = back;
+		
 
 
 	}
-	else
-		if (m_start != p)
-			  iter = nullptr;
+	else if (m_start == p)
+			iter = itend;
+	
 
 	return iter;
 }
