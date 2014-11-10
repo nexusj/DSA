@@ -38,8 +38,8 @@ public:
 	iterator begin() const;
 	iterator end() const;
 	bool IsEmpty() const;
-	T& operator[](const int& v) const;
-	
+	T& operator[](const int& v);
+	const T& operator[](const int& v) const;
 	
 	
 
@@ -125,7 +125,7 @@ void ListS<T>::Add(ldata e, position p)
 		
 		s_stack[p-1].succ = p ;
 		s_stack[p].succ = -1;
-		m_start = p;
+		m_start = p-1;
 
 	}
 	else if (m_size < BUFFER_SIZE)
@@ -178,6 +178,7 @@ void ListS<T>::Add(ldata e, position p)
 		{
 			iter->succ = index;
 			m_freeList->succ = -1;
+			
 		}
 
 	}
@@ -216,13 +217,13 @@ void ListS<T>::RemoveAt(position p)
 		ListS<T>::iterator iter = this->begin();
 		iterator back = iter;
 
-		for (; index < p-1 && iter->succ != -1; iter = &s_stack[iter->succ])
+		for (; index < p && iter->succ != -1; iter = &s_stack[iter->succ])
 		{ 
 			index++;
 			back = iter;
 		}
 
-		if (index == p-1)
+		if (index == p)
 		{
 			_t = iter->succ;
 			back->succ = s_stack[iter->succ].succ-1;
@@ -307,7 +308,7 @@ bool ListS<T>::IsEmpty() const
 }
 
 template<class T>
-T& ListS<T>::operator[](const int& v) const
+T& ListS<T>::operator[](const int& v) 
 {
 	iterator it = this->begin();
 	int index = m_start;
@@ -319,24 +320,44 @@ T& ListS<T>::operator[](const int& v) const
 	return s_stack[index].elem;
 }
 
-
+template <class T>
+const T& ListS<T>::operator[](const int& v) const
+{
+	return const_cast<T&>(*this)[v];
+}
 
 template<class T>
 typename ListS<T>::iterator ListS<T>::GetFreeIndex(position& v)
 {
 	iterator it = &s_stack[v];
+	iterator itend = this->end();
 
-	do 
+if (m_size > 1)
+{
+	if (it == itend || it->succ != -1)
 	{
-		++it;
-		
-	} while (it->succ != -1);
+		do
+		{
+			++it;
 
+		} while (it->succ != -1 && it != itend);
+
+		v++;
+
+		m_freeList = it;
+	}
+}
+else
+{
 	v++;
+	m_freeList += v;
+}
+	
+	
 
 
 
-		return (it->succ == -1 ? (m_freeList = it) : (m_freeList = nullptr));
+		return m_freeList;
 
 	
 }
@@ -365,7 +386,7 @@ typename ListS<T>::iterator ListS<T>::CheckPosition(position& p)
 		}
 
 		
-			iter = back;
+			iter = it;
 		
 
 
