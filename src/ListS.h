@@ -1,5 +1,5 @@
-#ifndef _LISTS_HEADER_
-#define _LISTS_HEADER_
+#ifndef _LISTVSTATIC_HEADER_
+#define _LISTVSTATIC_HEADER_
 
 #include <assert.h>
 #include <exception>
@@ -13,10 +13,10 @@ template<class T>
 class ListS 
 {
 
-	struct IBufferStack
+	struct ICell
 	{
 		T elem;
-		int succ;
+		int next;
 
 
 
@@ -26,46 +26,36 @@ public:
 	ListS();
 	ListS(const ListS& l);
 	~ListS();
-	typedef T ldata;
 	using position = int;
-	using iterator = IBufferStack*;
+	using iterator = ICell*;
 	void Create();
-	void Add(ldata e, position p);
-	void Add(ldata e);
+	void Add(T e, position p);
+	void Add(T e);
 	void RemoveAt(position p);
 	void Remove(T e);
-	IBufferStack* GetStruct() const;
 	iterator begin() const;
 	iterator end() const;
 	bool IsEmpty() const;
 	T& operator[](const int& v);
 	const T& operator[](const int& v) const;
-	
+	void Sort();
+	void Reverse();
 	
 
 private:
-	static IBufferStack s_stack[100];
-	static IBufferStack* m_freeList;
+	static ICell m_buffer[BUFFER_SIZE];
+	static iterator m_freeList;
 	int m_size;
 	int m_start;
 	iterator GetFreeIndex(position&);
 	iterator CheckPosition(position&);
+	void Swap(T&, T&);
+	void Compare(T&, T&);
 };
 
 
-
-template<class T> typename ListS<T>::IBufferStack ListS<T>::s_stack[100];
-template<class T> typename ListS<T>::IBufferStack* ListS<T>::m_freeList;
-
-template<class T>
-typename ListS<T>::IBufferStack* ListS<T>::GetStruct() const
-{
-	return s_stack;
-}
-
-
-
-
+template<class T> typename ListS<T>::ICell ListS<T>::m_buffer[BUFFER_SIZE];
+template<class T> typename ListS<T>::iterator ListS<T>::m_freeList;
 
 
 
@@ -98,12 +88,12 @@ void ListS<T>::Create()
 {
 
 
-	m_freeList = s_stack;
+	m_freeList = m_buffer;
 
 	for (int i = 0; i < BUFFER_SIZE; i++)
-		s_stack[i].succ = -1;
+		m_buffer[i].next = -1;
 
-	s_stack[BUFFER_SIZE - 1].succ = -1;
+	m_buffer[BUFFER_SIZE - 1].next = -1;
 
 	m_size = 0;
 	
@@ -111,7 +101,7 @@ void ListS<T>::Create()
 
 
 template<class T>
-void ListS<T>::Add(ldata e, position p)
+void ListS<T>::Add(T e, position p)
 {
 	if(p < 0 ||  p > BUFFER_SIZE)
 		throw "Valore non ammesso !";
@@ -123,8 +113,8 @@ void ListS<T>::Add(ldata e, position p)
 	{
 		
 		
-		s_stack[p-1].succ = p ;
-		s_stack[p].succ = -1;
+		m_buffer[p-1].next = p ;
+		m_buffer[p].next = -1;
 		m_start = p-1;
 
 	}
@@ -132,52 +122,21 @@ void ListS<T>::Add(ldata e, position p)
 	{
 		GetFreeIndex(index);
 
-		iterator next = CheckPosition(p);
+		iterator itnext = CheckPosition(p);
  		iterator iter = this->end();
 
 
-		if (next != nullptr)
+		if (itnext != nullptr)
 		{
 
-			m_freeList->succ = next->succ;
-			next->succ = index;
+			m_freeList->next = itnext->next;
+			itnext->next = index;
 			
-			/*
-			if (p >= iter->succ)
-			{
-
-			s_stack[iter->succ].succ = p;
-
-			s_stack[p].succ = -1;
-
-
-			}
-			else
-			{
-
-			//next->succ = -1;
-			s_stack[p].succ = iter->succ;
-			iter->succ = p;
-
-			}
-
-			s_stack[p].elem = e;
-			}
-			else
-			{
-			m_freeList->succ = next->succ;
-			next->succ = index;
-
-			//m_freeList->elem = e;
-
-			}*/
-
-
 		}
 		else
 		{
-			iter->succ = index;
-			m_freeList->succ = -1;
+			iter->next = index;
+			m_freeList->next = -1;
 			
 		}
 
@@ -189,7 +148,7 @@ void ListS<T>::Add(ldata e, position p)
 }
 
 template<class T>
-void ListS<T>::Add(ldata e)
+void ListS<T>::Add(T e)
 {
 
 	Add(e, m_size+1);
@@ -204,9 +163,9 @@ void ListS<T>::RemoveAt(position p)
 
 	if (p == m_start)
 	{
-		m_start = s_stack[m_start].succ;
-		s_stack[p].succ = -1;
-		m_freeList = &s_stack[p];
+		m_start = m_buffer[m_start].next;
+		m_buffer[p].next = -1;
+		m_freeList = &m_buffer[p];
 		
 
 	}
@@ -217,7 +176,7 @@ void ListS<T>::RemoveAt(position p)
 		ListS<T>::iterator iter = this->begin();
 		iterator back = iter;
 
-		for (; index < p && iter->succ != -1; iter = &s_stack[iter->succ])
+		for (; index < p && iter->next != -1; iter = &m_buffer[iter->next])
 		{ 
 			index++;
 			back = iter;
@@ -225,10 +184,10 @@ void ListS<T>::RemoveAt(position p)
 
 		if (index == p)
 		{
-			_t = iter->succ;
-			back->succ = s_stack[iter->succ].succ-1;
-			iter->succ = -1;
-
+			_t = iter->next;
+			back->next = m_buffer[iter->next].next-1;
+			iter->next = -1;
+			m_freeList = &m_buffer[p];
 			m_size--;
 		}	
 		
@@ -252,16 +211,16 @@ void ListS<T>::Remove(T e)
 
 		ListS<T>::iterator iter = this->begin();
 
-		for (; s_stack[iter->succ].elem != e && iter->succ != -1; iter = &s_stack[iter->succ])
+		for (; m_buffer[iter->next].elem != e && iter->next != -1; iter = &m_buffer[iter->next])
 		{
 		}
 
-		if (s_stack[iter->succ].elem == e)
+		if (m_buffer[iter->next].elem == e)
 		{
-			_t = iter->succ;
-			iter->succ = iter[iter->succ].succ;
-			iter[_t].succ = -1;
-
+			_t = iter->next;
+			iter->next = m_buffer[iter->next].next;
+			m_buffer[_t].next = -1;
+			m_freeList = &m_buffer[_t];
 			m_size--;
 		}
 		
@@ -275,7 +234,7 @@ void ListS<T>::Remove(T e)
 template<class T>
 typename ListS<T>::iterator ListS<T>::begin() const
 {
-	return &s_stack[m_start];
+	return &m_buffer[m_start];
 }
 
 template<class T>
@@ -287,10 +246,10 @@ typename ListS<T>::iterator ListS<T>::end() const
 	{
 		
 		
-		while (iter->succ != -1)
+		while (iter->next != -1)
 		{
 			
-			iter = &s_stack[iter->succ];
+			iter = &m_buffer[iter->next];
 			
 		} 
 		
@@ -313,11 +272,11 @@ T& ListS<T>::operator[](const int& v)
 	iterator it = this->begin();
 	int index = m_start;
 
-	for (; it->succ != -1 && index <= v-1; it = &s_stack[it->succ])
+	for (; it->next != -1 && index <= v-1; it = &m_buffer[it->next])
 	{
-		index = it->succ;
+		index = it->next;
 	}
-	return s_stack[index].elem;
+	return m_buffer[index].elem;
 }
 
 template <class T>
@@ -326,21 +285,81 @@ const T& ListS<T>::operator[](const int& v) const
 	return const_cast<T&>(*this)[v];
 }
 
+
+
+template<class T>
+void ListS<T>::Sort()
+{
+	iterator head = this->begin(),
+		tend = this->end(),
+		next = NULL,
+		back = NULL;
+
+	if (!this->IsEmpty() && m_size > 1)
+	{
+		for (; head != tend; head = &m_buffer[head->next])
+		{
+			next = &m_buffer[head->next];
+			back = &m_buffer[(next - m_buffer) - 1];
+
+			while (next != this->begin() && back->elem > next->elem)
+			{
+				Swap(next->elem, back->elem);
+				next = &m_buffer[(next - m_buffer) - 1];
+				back = &m_buffer[(next - m_buffer) - 1];
+			}
+		}
+	}
+	
+}
+
+
+
+template<class T>
+void ListS<T>::Reverse()
+{
+	iterator head = this->begin(),
+		itend = this->end(),
+		next = itend;
+	T t;
+	int i = m_size/2;
+
+	if (!this->IsEmpty() && m_size > 1)
+	{
+		
+		while (i > 0)
+		{
+			t = head->elem;
+			head->elem = m_buffer[next - m_buffer].elem;
+			next->elem = t;
+			next = &m_buffer[(next - m_buffer) - 1];
+			head = &m_buffer[head->next];
+			i--;
+		
+		}
+	}
+	
+
+
+
+}
+
+
 template<class T>
 typename ListS<T>::iterator ListS<T>::GetFreeIndex(position& v)
 {
-	iterator it = &s_stack[v];
+	iterator it = &m_buffer[v];
 	iterator itend = this->end();
 
 if (m_size > 1)
 {
-	if (it == itend || it->succ != -1)
+	if (it == itend || it->next != -1)
 	{
 		do
 		{
 			++it;
 
-		} while (it->succ != -1 && it != itend);
+		} while (it->next != -1 && it != itend);
 
 		v++;
 
@@ -380,7 +399,7 @@ typename ListS<T>::iterator ListS<T>::CheckPosition(position& p)
 			
 			
 			back = it;
-			it = &s_stack[it->succ];
+			it = &m_buffer[it->next];
 			++index;
 
 		}
@@ -396,6 +415,22 @@ typename ListS<T>::iterator ListS<T>::CheckPosition(position& p)
 	
 
 	return iter;
+}
+
+
+template<class T>
+void ListS<T>::Swap(T& a, T& b)
+{
+	T t = a;
+	a = b;
+	b = t;
+}
+
+
+template<class T>
+void ListS<T>::Compare(T& a , T& b)
+{
+	return b < a ? Swap(a, b) : b;
 }
 
 #endif
