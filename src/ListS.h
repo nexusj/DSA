@@ -50,7 +50,7 @@ private:
 	iterator GetFreeIndex(position&);
 	iterator CheckPosition(position&);
 	void Swap(T&, T&);
-	void Compare(T&, T&);
+	iterator GetCellAt(position);
 };
 
 
@@ -270,11 +270,11 @@ template<class T>
 T& ListS<T>::operator[](const int& v) 
 {
 	iterator it = this->begin();
-	int index = m_start;
+	position index = m_start;
 
 	for (; it->next != -1 && index <= v-1; it = &m_buffer[it->next])
 	{
-		index = it->next;
+		index++;
 	}
 	return m_buffer[index].elem;
 }
@@ -300,13 +300,13 @@ void ListS<T>::Sort()
 		for (; head != tend; head = &m_buffer[head->next])
 		{
 			next = &m_buffer[head->next];
-			back = &m_buffer[(next - m_buffer) - 1];
+			back = this->GetCellAt((next - m_buffer) - 1);
 
 			while (next != this->begin() && back->elem > next->elem)
 			{
 				Swap(next->elem, back->elem);
-				next = &m_buffer[(next - m_buffer) - 1];
-				back = &m_buffer[(next - m_buffer) - 1];
+				next = this->GetCellAt((next - m_buffer) - 1);
+				back = this->GetCellAt((next - m_buffer) - 1);
 			}
 		}
 	}
@@ -322,7 +322,7 @@ void ListS<T>::Reverse()
 		itend = this->end(),
 		next = itend;
 	T t;
-	int i = m_size/2;
+	position i = m_size/2;
 
 	if (!this->IsEmpty() && m_size > 1)
 	{
@@ -332,7 +332,7 @@ void ListS<T>::Reverse()
 			t = head->elem;
 			head->elem = m_buffer[next - m_buffer].elem;
 			next->elem = t;
-			next = &m_buffer[(next - m_buffer) - 1];
+			next = this->GetCellAt(next - m_buffer - 1);
 			head = &m_buffer[head->next];
 			i--;
 		
@@ -387,7 +387,7 @@ typename ListS<T>::iterator ListS<T>::CheckPosition(position& p)
 {
 	iterator iter = nullptr;
 	iterator itend = this->end();
-	int index = 1;
+	position index = 1;
 
 	if (m_size > 1 && p-1 < m_size)
 	{
@@ -428,9 +428,16 @@ void ListS<T>::Swap(T& a, T& b)
 
 
 template<class T>
-void ListS<T>::Compare(T& a , T& b)
+typename ListS<T>::iterator ListS<T>::GetCellAt(position p)
 {
-	return b < a ? Swap(a, b) : b;
+	iterator it = this->begin();
+	position i = m_start;
+
+	for (; i++ < p; it = &m_buffer[it->next])
+	{
+	}
+
+	return it;
 }
 
 #endif
