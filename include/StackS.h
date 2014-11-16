@@ -17,8 +17,8 @@
 *   Free Software Foundation, Inc.,                                       *
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
-#ifndef PILAVT_H
-#define PILAVT_H
+#ifndef StackS_H
+#define StackS_H
 
 #include <iostream>
 
@@ -26,14 +26,14 @@ using namespace std;
 
 
 template <class Elemento>
-class Pila
+class StackS
 {
 public:
 	typedef Elemento tipoelem;
-	Pila();
-	Pila(int);
-	~Pila();
-	void creaPila();
+	StackS();
+	StackS(int);
+	~StackS();
+	void creaStackS();
 	bool IsEmpty() const;
 	tipoelem& read() const;
 	Elemento& Pop();
@@ -49,47 +49,47 @@ private:
 
 
 template <class Elemento>
-Pila<Elemento>::Pila()
+StackS<Elemento>::StackS()
 {
-	elementi = new tipoelem[100]; // dimensione standard della pila
+	elementi = new tipoelem[100]; // dimensione standard della StackS
 	MAXLUNGH = 100;
-	creaPila();
+	creaStackS();
 }
 
 template <class Elemento>
-Pila<Elemento>::Pila(int N)
+StackS<Elemento>::StackS(int N)
 {
-	elementi = new tipoelem[N]; // dimensione N della pila
+	elementi = new tipoelem[N]; // dimensione N della StackS
 	MAXLUNGH = N;
-	creaPila();
+	creaStackS();
 }
 
 template <class Elemento>
-Pila<Elemento>::~Pila()
+StackS<Elemento>::~StackS()
 {
 	delete[] elementi;
 }
 
 template <class Elemento>
-void Pila<Elemento>::creaPila()
+void StackS<Elemento>::creaStackS()
 {
 	testa = 0;
 }
 
 template <class Elemento>
-bool Pila<Elemento>::IsEmpty() const
+bool StackS<Elemento>::IsEmpty() const
 {
 	return testa == 0;
 }
 
 template <class Elemento>
-typename Pila<Elemento>::tipoelem& Pila<Elemento>::read() const
+typename StackS<Elemento>::tipoelem& StackS<Elemento>::read() const
 {
 	return elementi[testa - 1];
 }
 
 template <class Elemento>
-Elemento& Pila<Elemento>::Pop()
+Elemento& StackS<Elemento>::Pop()
 {
 	int _t = testa;
 	if (!IsEmpty())
@@ -100,18 +100,18 @@ Elemento& Pila<Elemento>::Pop()
 	}
 	else
 	{
-		cout << "nessun elemento nella pila" << endl;
+		cout << "nessun elemento nella StackS" << endl;
 	}
 
 	return elementi[_t - 1];
 }
 
 template <class Elemento>
-void Pila<Elemento>::Push(tipoelem el)
+void StackS<Elemento>::Push(tipoelem el)
 {
 	if (testa == MAXLUNGH)
 	{
-		cout << "raggiunta capacitÃ  massima della pila" << endl;
+		cout << "raggiunta capacitÃ  massima della StackS" << endl;
 	}
 	else
 	{
@@ -122,9 +122,9 @@ void Pila<Elemento>::Push(tipoelem el)
 
 
 template <class Elemento>
-void Pila<Elemento>::Print()
+void StackS<Elemento>::Print()
 {
 	std::cout << elementi[testa - 1];
 }
 
-#endif // _PILAVT_H
+#endif // _StackSVT_H

@@ -49,7 +49,7 @@ template <typename T>
 void MultipleStack<T>::Push(const T& e, unsigned int n)
 {
 	
-	m_stack->read(n)->inPila(e);
+	m_stack->read(n)->Push(e);
 	
 }
 
@@ -58,7 +58,7 @@ void MultipleStack<T>::Push(const T& e, unsigned int n)
 template <typename T>
 T& MultipleStack<T>::Pop(unsigned int n)
 {
-	return m_stack->read(n)->fuoriPila();
+	return m_stack->read(n)->Pop();
 	
 }
 
