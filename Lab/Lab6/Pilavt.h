@@ -26,13 +26,13 @@ using namespace std;
 
 
 template <class Elemento>
-class Pila
+class StackS
 {
 public:
 	typedef Elemento tipoelem;
-	Pila();
-	Pila(int);
-	~Pila();
+	StackS();
+	StackS(int);
+	~StackS();
 	void creaPila();
 	bool IsEmpty() const;
 	tipoelem& read() const;
@@ -49,7 +49,7 @@ private:
 
 
 template <class Elemento>
-Pila<Elemento>::Pila()
+StackS<Elemento>::StackS()
 {
 	elementi = new tipoelem[100]; // dimensione standard della pila
 	MAXLUNGH = 100;
@@ -57,7 +57,7 @@ Pila<Elemento>::Pila()
 }
 
 template <class Elemento>
-Pila<Elemento>::Pila(int N)
+StackS<Elemento>::StackS(int N)
 {
 	elementi = new tipoelem[N]; // dimensione N della pila
 	MAXLUNGH = N;
@@ -65,31 +65,31 @@ Pila<Elemento>::Pila(int N)
 }
 
 template <class Elemento>
-Pila<Elemento>::~Pila()
+StackS<Elemento>::~StackS()
 {
 	delete[] elementi;
 }
 
 template <class Elemento>
-void Pila<Elemento>::creaPila()
+void StackS<Elemento>::creaPila()
 {
 	testa = 0;
 }
 
 template <class Elemento>
-bool Pila<Elemento>::IsEmpty() const
+bool StackS<Elemento>::IsEmpty() const
 {
 	return testa == 0;
 }
 
 template <class Elemento>
-typename Pila<Elemento>::tipoelem& Pila<Elemento>::read() const
+typename StackS<Elemento>::tipoelem& StackS<Elemento>::read() const
 {
 	return elementi[testa - 1];
 }
 
 template <class Elemento>
-Elemento& Pila<Elemento>::Pop()
+Elemento& StackS<Elemento>::Pop()
 {
 	int _t = testa;
 	if (!IsEmpty())
@@ -107,7 +107,7 @@ Elemento& Pila<Elemento>::Pop()
 }
 
 template <class Elemento>
-void Pila<Elemento>::Push(tipoelem el)
+void StackS<Elemento>::Push(tipoelem el)
 {
 	if (testa == MAXLUNGH)
 	{
@@ -122,7 +122,7 @@ void Pila<Elemento>::Push(tipoelem el)
 
 
 template <class Elemento>
-void Pila<Elemento>::Print()
+void StackS<Elemento>::Print()
 {
 	std::cout << elementi[testa - 1];
 }

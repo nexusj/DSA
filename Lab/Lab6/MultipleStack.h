@@ -15,7 +15,7 @@ public:
 	T& Pop(unsigned int);
 	void Print(unsigned int);
 private:
-	List_vector<Pila<T>*> *m_stack;
+	List_vector<StackS<T>*> *m_stack;
 
 };
 
@@ -23,11 +23,11 @@ private:
 template <typename T>
 MultipleStack<T>::MultipleStack(unsigned int n)
 {
-	m_stack = new List_vector<Pila<T>*>(n);
+	m_stack = new List_vector<StackS<T>*>(n);
 
 	for (int i = 0; i < n; i++)
 	{
-		m_stack->insert(new Pila<T>, i);
+		m_stack->insert(new StackS<T>, i);
 	}
 	
 
