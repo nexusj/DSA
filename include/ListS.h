@@ -24,7 +24,6 @@ class ListS
 
 public:
 	ListS();
-	ListS(const ListS& l);
 	~ListS();
 	using position = int;
 	using iterator = ICell*;
@@ -72,16 +71,6 @@ ListS<T>::~ListS()
 
 }
 
-
-template<class T>
-ListS<T>::ListS(const ListS& l)
-{
-	
-
-
-
-
-}
 
 template<class T>
 void ListS<T>::Create()

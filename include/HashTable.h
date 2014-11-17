@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include "Dictionary.h"
+#include "ListS.h"
 
 /* A possibility for the representation of a dictionary is to use hashing.
  *
@@ -154,6 +155,10 @@ public:
   
   void insert( mypair< K, E>& );
 
+  bool Contains(const E&);
+  ListS<E> Values();
+  ListS<K>& Keys();
+
 private:
  mypair<K, E>** table;    // the hash table
  hash<K> hashm;		            // maps type K to nonnegative integer
@@ -246,5 +251,64 @@ template<class K, class E>
 void hash_table<K,E>::modify(const K& k, const E& e){
 
 }
+
+
+
+template<class K, class E>
+bool hash_table<K, E>::Contains(const E& e)
+{
+	for (int i = 0; i < divisor; i++)
+	{
+		if (table[i])
+		{
+			if (table[i]->second == e)
+			{
+				return true;
+			}
+		}
+		
+	}
+
+	return false;
+}
+
+
+template<class K, class E>
+ListS<E> hash_table<K, E>::Values()
+{
+	ListS<E> _values;
+	
+
+	for (int i = 0; i < divisor; i++)
+	{
+		if (table[i])
+		{
+			_values.Add(table[i]->second);
+		}
+	}
+
+	return _values;
+
+
+}
+
+
+template<class K, class E>
+ListS<K>& hash_table<K, E>::Keys()
+{
+	ListS<K> _keys;
+
+
+	for (int i = 0; i < divisor; i++)
+	{
+		if (table[i])
+		{
+			_keys.Add(table[i]->first);
+		}
+	}
+
+	return _keys;
+}
+
 
 #endif

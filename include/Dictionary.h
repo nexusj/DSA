@@ -37,6 +37,7 @@ struct mypair {
 
   // methods
   mypair(){}
+  mypair(K& k, E& e) : first(k), second(e){}
   mypair(mypair<K,E>& the_pair){
     first = the_pair.first;
     second = the_pair.second;
