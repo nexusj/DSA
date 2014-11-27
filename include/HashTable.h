@@ -274,7 +274,7 @@ bool hash_table<K, E>::Contains(const E& e)
 
 
 template<class K, class E>
-ListS<E> hash_table<K, E>::Values()
+ListS<E>& hash_table<K, E>::Values()
 {
 	ListS<E> _values;
 	
