@@ -1,13 +1,28 @@
+#include <iostream>
 #include "ListS.h"
-#include <cstdlib>
-#include <ctime>
+#include "ListP.h"
+
 
 int main(int argc, char** argv)
 {
-	std::srand(std::time(0));
+	
 
 	ListS<int> t;
-
+	ListP<int> l;
+	ListP<int>::iterator first = l.begin();
+	l.Add(3, first);
+	first = l.Next(first);
+	l.Add(4, first);
+	first = l.Next(first);
+	l.Add(6, first);
+	
+	std::cout << l;
+	
+	l.Remove(4);
+	std::cout << l;
+	first = l.Next(first);
+	l.Add(12);
+	std::cout << l;
 	/*t.Add(1);
 	t.Add(2);
 	t.Add(3);
@@ -15,7 +30,7 @@ int main(int argc, char** argv)
 	t.Add(5);
 	t.Add(6);
 	t.Add(7);
-	t.Reverse();*/
+	t.Reverse();
 	t.Add(12);
 	t.Add(2);
 	t.Add(18);
@@ -28,7 +43,7 @@ int main(int argc, char** argv)
 	t.Add(10, 5);
 	t.Add(3, 7);
 	t[5] = 200;
-	auto i = t[5];
+	auto i = t[5];*/
 
 	return 0;
 }
