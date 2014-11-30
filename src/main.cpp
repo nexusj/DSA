@@ -1,6 +1,8 @@
 #include <iostream>
 #include "ListS.h"
 #include "ListP.h"
+#include "StackP.h"
+#include "QueueP.h"
 
 
 int main(int argc, char** argv)
@@ -9,6 +11,20 @@ int main(int argc, char** argv)
 
 	ListS<int> t;
 	ListP<int> l;
+	StackP<int> s;
+	QueueP<int> q;
+	
+	q.Push(1);
+	q.Push(2);
+	q.Push(3);
+	q.Print();
+	q.Print();
+
+	s.Push(1);
+	s.Push(2);
+	s.Push(3);
+	s.Print();
+	std::cout << s;
 	ListP<int>::iterator first = l.begin();
 	l.Add(3, first);
 	first = l.Next(first);

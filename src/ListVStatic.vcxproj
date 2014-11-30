@@ -14,7 +14,7 @@
     <ProjectGuid>{368F1DE9-7116-415E-A2EF-884088DC2354}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ConsoleApplication1</RootNamespace>
-    <ProjectName>ListVStatic</ProjectName>
+    <ProjectName>DSA</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -44,13 +44,13 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\NexusJ\Documents\GitHub\DSA\DSA\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\tmp\</IntDir>
+    <IntDir>$(ProjectDir)$(Configuration)\$(Configuration)\tmp\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Users\NexusJ\Documents\GitHub\DSA\DSA\include;$(IncludePath)</IncludePath>
     <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\tmp\</IntDir>
+    <IntDir>$(ProjectDir)$(Configuration)\$(Configuration)\tmp\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -89,7 +89,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ListP.h" />
+    <ClInclude Include="..\include\QueueP.h" />
+    <ClInclude Include="..\include\StackP.h" />
     <ClInclude Include="ListS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

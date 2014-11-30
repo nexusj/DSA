@@ -26,7 +26,10 @@
     <ClInclude Include="ListS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ListP.h">
+    <ClInclude Include="..\include\StackP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\QueueP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
