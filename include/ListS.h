@@ -261,11 +261,11 @@ T& ListS<T>::operator[](const int& v)
 	iterator it = this->begin();
 	position index = m_start;
 
-	for (; it->next != -1 && index <= v-1; it = &m_buffer[it->next])
+	for (; it->next != -1 && index <  v; it = &m_buffer[it->next])
 	{
 		index++;
 	}
-	return m_buffer[index].elem;
+	return it->elem;
 }
 
 template <class T>
