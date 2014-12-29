@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 
-
 /* A dictionary is a collection of pairs of the form (k,v), where k is a key and v is the value
  * associated with the key k (equivalently, v is the value whose key is k). 
  */
@@ -28,6 +27,33 @@
 
 #ifndef _DICTIONARY_H
 #define _DICTIONARY_H
+
+#include <string>
+
+using std::string;
+
+template<class T>
+class hash{
+public:
+	size_t operator()(const T the_key) const;
+};
+
+
+/* a specialization with type string */
+template<>
+class hash < string >
+{
+public:
+	size_t operator()(const string the_key) const {
+		unsigned long hash_value = 0;
+		int length = (int)the_key.length();
+		for (int i = 0; i < length; i++)
+			hash_value = 5 * hash_value + the_key.at(i);
+		return size_t(hash_value);
+	}
+};
+
+
 
 template<class K, class E>
 struct mypair {
@@ -60,11 +86,11 @@ public:
       // return the number of pairs in the dictionary
   virtual mypair< K, E>* find(const K& k) const = 0;	
       // return the pair with key k
-  virtual void insert( mypair< K, E>& p) = 0;		
+  virtual void Add( mypair< K, E>& p) = 0;		
       // insert the pair p into the dictionary
-  virtual void erase(const K& k) = 0;	
+  virtual void Remove(const K& k) = 0;	
       // delete the pair with key k
-  virtual void modify(const K& k, const E& e) = 0;
+  virtual void Modify(const K& k, const E& e) = 0;
       // modify the value of the pair with key k to e
 };
 

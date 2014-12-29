@@ -86,30 +86,9 @@
  * all remaining pairs into an empty hash table.
  */
 
-#include <string>
-
-using std::string;
-
-template<class T>
-class hash{
-public:
-  size_t operator()(const T the_key) const;
-};
 
 
-/* a specialization with type string */
-template<>
-class hash<string>
-{
-public:
-  size_t operator()(const string the_key) const {
-    unsigned long hash_value = 0;
-    int length = (int) the_key.length();
-    for (int i=0; i<length; i++)
-      hash_value = 5 * hash_value + the_key.at(i);
-    return size_t(hash_value);
-  }
-};
+
 
 /* = LINEAR PROBING = 
  *
@@ -156,7 +135,7 @@ public:
   void insert( mypair< K, E>& );
 
   bool Contains(const E&);
-  ListS<E> Values();
+  ListS<E>& Values();
   ListS<K>& Keys();
 
 private:
