@@ -1,31 +1,37 @@
 #include <iostream>
-#include "hashtable.h"
+#include "ChainedHashTable.h"
 
 
 int main(int argc, char* argv[])
 {
-	hash_table<std::string, int> h(10);
+	ChainedHashTable<string, int> h(10);
+	
 
-	mypair<std::string, int> pairs;
+	mypair<string, int> pairs;
 
 	pairs.first = "a";
 	pairs.second = 12;
 
-	h.insert(pairs);
+	h.Add(pairs);
+	
 
 	pairs.first = "b";
 	pairs.second = 20;
 
-	h.insert(pairs);
+	h.Add(pairs);
 
+	h.Remove("a");
+	h.Modify("b", 12);
 
 	pairs.first = "c";
 	pairs.second = 23;
 
-	h.insert(pairs);
-	h.Contains(20);
+	h.Add(pairs);
+	h.Contains(2);
 	
 	auto i = h.Keys();
+	auto e = h.Values();
+	
 	std::cout << i[0] << std::endl;
 
 	return 0;

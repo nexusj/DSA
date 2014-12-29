@@ -1,3 +1,25 @@
+// The MIT License(MIT)
+// 
+// Copyright(c) 2014 Vito Palumbo
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files(the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions :
+// 
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 #ifndef _LISTP_HEADER_
 #define _LISTP_HEADER_
 
@@ -32,7 +54,7 @@ class ListP
 		bool end(iterator&) const;
 		bool IsEmpty() const;
 		iterator Next(iterator&) const;
-		T& Read(iterator&);
+		T& Read(iterator&) const;
 		T& operator[](const int& v);
 		const T& operator[](const int& v) const;
 		
@@ -60,9 +82,20 @@ ListP<T>::ListP()
 }
 
 template <typename T>
-ListP<T>::ListP(const ListP<T>&)
+ListP<T>::ListP(const ListP<T>& l)
 {
+	list = new ICell;
+	list->next = list;
 
+	m_size = l.m_size;
+
+	iterator it = l.begin();
+
+	while (!l.end(it))
+	{
+		this->Add(l.Read(it));
+		it = l.Next(it);
+	}
 }
 
 template <typename T>
@@ -174,7 +207,7 @@ typename ListP<T>::iterator ListP<T>::Next(iterator& it) const
 
 
 template <typename T>
-T& ListP<T>::Read(iterator& it)
+T& ListP<T>::Read(iterator& it) const
 {
 	return it->elem;
 }
