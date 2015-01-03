@@ -14,30 +14,30 @@ int main(){
 	Bin_treec<int>::Nodo n4 = 0;
 
 	//Creazione primo albero 
-	T.ins_root(n1);
+	T.AddRoot();
 	T.write(n1, 1);
 	n1 = T.root();
-	T.ins_sx(n1);
-	T.ins_dx(n1);
-	T.write(T.sx(n1), 2);
-	n1 = T.dx(n1);
+	T.AddLeft(n1);
+	T.AddRight(n1);
+	T.write(T.left(n1), 2);
+	n1 = T.right(n1);
 	n3 = n1;
 	T.write(n1, 3);
-	T.ins_dx(n1);
-	T.write(T.dx(n1), 4);
+	T.AddRight(n1);
+	T.write(T.right(n1), 4);
 	T.print();
 	//Creazione secondo albero
-	Z.ins_root(n2);
+	Z.AddRoot(n2);
 	Z.write(n2, 1);
 	n2 = Z.root();
-	Z.ins_sx(n2);
-	Z.ins_dx(n2);
-	Z.write(Z.sx(n2), 2);
-	n2 = Z.dx(n2);
+	Z.AddLeft(n2);
+	Z.AddRight(n2);
+	Z.write(Z.left(n2), 2);
+	n2 = Z.right(n2);
 	n4 = n2;
 	Z.write(n2, 4);
-	Z.ins_dx(n2);
-	Z.write(Z.dx(n2), 3);
+	Z.AddRight(n2);
+	Z.write(Z.right(n2), 3);
 	Z.print();
 	//Mutation tra i due alberi 
 	mutation(T, n3, Z, n4);

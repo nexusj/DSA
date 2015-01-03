@@ -3,6 +3,7 @@
 #include "ListP.h"
 #include "StackP.h"
 #include "QueueP.h"
+#include "PointerBinTree.h"
 
 
 
@@ -14,6 +15,19 @@ int main(int argc, char** argv)
 	ListP<int> l;
 	StackP<int> s;
 	QueueP<int> q;
+	PointerBinTree<int> B;
+
+	PointerBinTree<int>::Node n;
+	B.AddRoot();
+	n = B.root();
+	B.write(n, 1);
+	B.AddLeft(n);
+	B.AddRight(n);
+	B.write(B.left(n), 2);
+	B.write(B.right(n), 3);
+
+	std::cout << B;
+
 	
 	q.Push(1);
 	q.Push(2);

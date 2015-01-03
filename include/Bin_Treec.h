@@ -64,7 +64,7 @@ public:
 	T read(Nodo) const;
 	void write(Nodo, value_type);
 
-	void AddRoot(Nodo);
+	void AddRoot();
 	void AddLeft(Nodo);
 	void AddRight(Nodo);
 
@@ -166,7 +166,7 @@ bool Bin_treec<T>::EmptyRight(typename Bin_treec<T>::Nodo n) const
 }
 
 template <class T>
-void Bin_treec<T>::AddRoot(typename Bin_treec<T>::Nodo n)
+void Bin_treec<T>::AddRoot()
 {
 	if (inizio == NIL)
 	{

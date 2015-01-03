@@ -6,7 +6,7 @@ void mutation(Bin_treec<T>& A, typename Bin_treec<T>::Nodo v,
 	typename Bin_treec<T>::Nodo x = 0;
 
 	if (!A.empty()){
-		swap.ins_root(x);
+		swap.AddRoot(x);
 		copy(A, v, swap, x);
 		//A.erase(v);
 		swap.print();
@@ -25,19 +25,19 @@ void copy(Bin_treec<T>& A, typename Bin_treec<T>::Nodo v,
 
 	B.write(x, A.read(v));
 
-	if (!A.sx_empty(v)){
+	if (!A.EmptyLeft(v)){
 
-		if (B.sx_empty(x))
-			B.ins_sx(x);
+		if (B.EmptyLeft(x))
+			B.AddLeft(x);
 
-		copy(A, A.sx(v), B, B.sx(x));
+		copy(A, A.left(v), B, B.left(x));
 	}
-	if (!A.dx_empty(v)){
+	if (!A.EmptyRight(v)){
 
-		if (B.dx_empty(x))
-			B.ins_dx(x);
+		if (B.EmptyRight(x))
+			B.AddRight(x);
 		
-		copy(A, A.dx(v), B, B.dx(x));
+		copy(A, A.right(v), B, B.right(x));
 		
 	}
 }

@@ -24,7 +24,7 @@
 
 template <class T, class N>
 class Bin_tree {
-	static const int NIL = -1;
+	
 
 public:
 
@@ -49,7 +49,7 @@ public:
 	virtual T read(Nodo) const = 0;
 	virtual void write(Nodo, value_type) = 0;
 
-	virtual void AddRoot(Nodo) = 0;
+	virtual void AddRoot() = 0;
 	virtual void AddLeft(Nodo) = 0;
 	virtual void AddRight(Nodo) = 0;
 
