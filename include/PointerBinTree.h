@@ -144,7 +144,7 @@ bool PointerBinTree<T>::EmptyRight(Node n) const
 template<typename T>
 void PointerBinTree<T>::erase(Node n)
 {
-	if (!n)
+	if (n)
 	{
 		if (!EmptyLeft(n))
 			erase(n->left);
