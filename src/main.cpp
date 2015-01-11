@@ -4,6 +4,8 @@
 #include "StackP.h"
 #include "QueueP.h"
 #include "PointerBinTree.h"
+#include "ListNTree.h"
+#include "ListPriorityQueue.h"
 
 
 
@@ -16,7 +18,46 @@ int main(int argc, char** argv)
 	StackP<int> s;
 	QueueP<int> q;
 	PointerBinTree<int> B;
+	ListNTree<int> nTree;
+	ListNTree<int> _tmp;
+	ListNTree<int>::Node m, _t;
+	ListPriorityQueue<int, int> pQ(PriorityOrder::ASCENDING);
+	IQueueNode<int, int> qn1(0, 10);
+	IQueueNode<int, int> qn2(0, 4);
 
+	
+	pQ.Add(new IQueueNode<int, int>(0, 5));
+	pQ.Add(new IQueueNode<int, int>(1, 10));
+	pQ.Add(new IQueueNode<int, int>(2, 4));
+	pQ.Add(new IQueueNode<int, int>(3, 8));
+	pQ.Add(new IQueueNode<int, int>(4, 7));
+	pQ.Add(new IQueueNode<int, int>(10, 10));
+	pQ.Add(new IQueueNode<int, int>(20, 6));
+
+	pQ.Print();
+	_tmp.AddRoot();
+	_t = _tmp.root();
+	_tmp.WriteNode(_t, 10);
+	_tmp.AddFirstChild(_t, 20);
+	_t = _tmp.FirstChild(_t);
+	_tmp.AddBrother(_t, 30);
+
+	_tmp.Print();
+
+	nTree.AddRoot();
+	m = nTree.root();
+	nTree.WriteNode(m, 1);
+	nTree.AddFirstChild(m, 2);
+	m = nTree.FirstChild(m);
+	nTree.AddBrother(m, 3);
+	m = nTree.root();
+	m = nTree.FirstChild(m);
+	nTree.AddFirstChild(m, 4);
+	nTree.AddFirstChild(m, 5);
+	nTree.Print();
+
+	nTree.AddFirstSubTree(m, _tmp);
+	nTree.Print();
 	PointerBinTree<int>::Node n;
 	B.AddRoot();
 	n = B.root();
