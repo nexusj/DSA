@@ -29,8 +29,8 @@ template<class E, class P, class N>
 	virtual void insArco(Nodo, Nodo, Peso) = 0;
 	virtual void cancNodo(Nodo) = 0;
 	virtual void cancArco(Nodo, Nodo) = 0;
-	//	virtual bool esisteNodo(Nodo) = 0;
-	//	virtual bool esisteArco(Arco) = 0;
+	virtual bool esisteNodo(Nodo) = 0;
+	virtual bool esisteArco(Arco) = 0;
 	virtual ListaNodi Adiacenti(Nodo) const = 0;
 	virtual ListaNodi list_nodi() const = 0;
 	virtual Etichetta leggiEtichetta(Nodo) const = 0;

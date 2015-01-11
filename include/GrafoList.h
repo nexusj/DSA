@@ -2,7 +2,7 @@
 #define GRAFOLIST_H
 
 #include "Grafo.h"
-#include "ListPointer.h"
+
 
 class NodoG{
  public:
@@ -32,7 +32,7 @@ template<class E, class P>
   E   etichetta;
   bool vuoto;
   void* info;
-  ListPointer<InfoArco<P> > archi;
+  List_vector<InfoArco<P> > archi;
     
   InfoNodo(){ 
     info = 0; 
@@ -61,8 +61,8 @@ template<class E, class P>
     void insArco(Nodo, Nodo, Peso);
     void cancNodo(Nodo);
     void cancArco(Nodo, Nodo);
-    //    bool esisteNodo(Nodo);
-    //    bool esisteArco(Arco);
+    bool esisteNodo(Nodo);
+    bool esisteArco(Arco);
     ListaNodi Adiacenti(Nodo) const ;
     ListaNodi list_nodi() const ;
     Etichetta leggiEtichetta(Nodo) const ;
@@ -132,21 +132,33 @@ template<class E, class P>
   void GrafoList<E, P>::cancNodo(Nodo n) {
   // ATTENZIONE: controllare prima che non ci siano archi uscenti o entranti in n
   bool canc = true;
+  typename List_vector<InfoArco<P> >::position p;
+  p = matrice[n.getId()].archi.begin();
   int i;
-  for (i=0; i < dimensione && canc; i++) 
-    if (!matrice[n.getId()].archi.empty()) 
-      canc = false;
+  
+	  if (!matrice[n.getId()].archi.empty())
+	  {
+		  while (!matrice[n.getId()].archi.empty())
+		  {
+			  matrice[n.getId()].archi.erase(matrice[n.getId()].archi.begin());
+		  }
+
+
+	  }
+
+
   // TODO: implementare il controllo sugli archi entranti
 
   if (canc){
     // la lista  matrice[n.getId()].archi è vuota;
     matrice[n.getId()].vuoto = true;
+	nodi--;
   }
 }
 
 template<class E, class P>
   void GrafoList<E, P>::cancArco(Nodo n1, Nodo n2){
-	typename ListPointer<InfoArco<P> >::position p; 
+	typename List_vector<InfoArco<P> >::position p; 
 	p = matrice[n1.getId()].archi.begin();
 	bool trovato = false;
 	while (!matrice[n1.getId()].archi.end(p) && !trovato){
@@ -160,10 +172,43 @@ template<class E, class P>
   archi--;
 }
 
+
+
+  template<class E, class P>
+  bool GrafoList<E, P>::esisteNodo(Nodo n)
+  {
+	  return (matrice[n.getId()].vuoto == false);
+  }
+
+
+  template<class E, class P>
+  bool GrafoList<E, P>::esisteArco(Arco a)
+  {
+	  
+	  typename List_vector<InfoArco<P> >::position p;
+	  p = matrice[a.nodo1.getId()].archi.begin();
+	  bool trovato = false;
+	  while (!matrice[a.nodo1.getId()].archi.end(p) && !trovato){
+		  if (matrice[a.nodo1.getId()].archi.read(p)._to.getId() == a.nodo2.getId())
+			  return true;
+		  else
+			  p = matrice[a.nodo1.getId()].archi.next(p);
+	  }
+	  return false;
+  }
+
+
 template<class E, class P>
   typename GrafoList<E, P>::ListaNodi GrafoList<E, P>::Adiacenti(Nodo n) const{
   ListaNodi list;
+  typename List_vector<InfoArco<P> >::position p;
+  p = matrice[n.getId()].archi.begin();
 
+  while (!matrice[n.getId()].archi.end(p))
+  {
+	  list.insert(new NodoG(matrice[n.getId()].archi.read(p)._to), list.begin());
+	  p = matrice[n.getId()].archi.next(p);
+  }
   // TODO: costruire la lista dei nodi dalla lista degli adiacenti matrice[n.getId()].archi
   return list;
   
@@ -179,7 +224,7 @@ template<class E, class P>
 }
 
 template<class E, class P>
-  E GrafoList<E, P>::leggiEtichetta(Nodo n) const {
+ typename GrafoList<E,P>::Etichetta GrafoList<E, P>::leggiEtichetta(Nodo n) const {
   return matrice[n.getId()].etichetta;
 }
 
@@ -190,7 +235,7 @@ template<class E, class P>
 
 template<class E, class P>
   P GrafoList<E, P>::leggiPeso(Nodo n1, Nodo n2) const {
-	typename ListPointer<InfoArco<P> >::position p; 
+	typename List_vector<InfoArco<P> >::position p; 
 	p = matrice[n1.getId()].archi.begin();
 	bool trovato = false;
 	while (!matrice[n1.getId()].archi.end(p) && !trovato){
@@ -205,7 +250,7 @@ template<class E, class P>
 
 template<class E, class P>
   void GrafoList<E, P>::scriviPeso(Nodo n1, Nodo n2, P peso) {
-	typename ListPointer<InfoArco<P> >::position p; 
+	typename List_vector<InfoArco<P> >::position p; 
 	p = matrice[n1.getId()].archi.begin();
 	bool trovato = false;
 	while (!matrice[n1.getId()].archi.end(p) && !trovato){
