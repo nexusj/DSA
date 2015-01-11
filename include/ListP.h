@@ -39,6 +39,16 @@ class ListP
 	{
 		T elem;
 		ICell* next;
+
+		bool operator==(const ICell& other) const
+		{
+			return(elem == other.elem && next == other.next);
+		}
+
+		bool operator<(const ICell& other) const
+		{
+			return false;
+		}
 	};
 
 	public:
@@ -50,13 +60,17 @@ class ListP
 		void Add(T);
 		void RemoveAt(iterator&);
 		void Remove(const T&);
-		iterator begin() const;
-		bool end(iterator&) const;
+		iterator& begin() const;
+		bool end(iterator) const;
 		bool IsEmpty() const;
-		iterator Next(iterator&) const;
+		iterator& Next(iterator&) const;
 		T& Read(iterator&) const;
 		T& operator[](const int& v);
 		const T& operator[](const int& v) const;
+		bool operator<(const ListP& other) const
+		{
+			return false;
+		}
 		
 
 
@@ -109,12 +123,18 @@ template <typename T>
 void ListP<T>::Add(T e , iterator& it)
 {
 	iterator temp = new ICell;
-
+	iterator back;
 	temp->elem = e;
 
-	temp->next = it->next;
-	it->next = temp;
-	//it = temp;  possibile pila se abilitato.
+	iterator target = this->begin();
+
+	for (; target->next != it ; target = this->Next(target))
+	{}
+
+	temp->next = target->next;
+	target->next = temp;
+	//back->next = temp;
+	it = temp;
 	m_size++;
 
 }
@@ -131,7 +151,7 @@ void ListP<T>::Add(T e)
 		temp = it;
 	}
 
-	this->Add(e, temp);
+	this->Add(e, it);
 }
 
 
@@ -162,28 +182,28 @@ void ListP<T>::Remove(const T& e)
 	iterator it = this->begin();
 	iterator temp = it;
 
-	for (; !this->end(it); temp = this->Next(temp))
+	for (; !this->end(it); it = this->Next(it))
 	{
 		
 		if (it->elem == e)
 		{
 			this->RemoveAt(it);
 		}
-		it = temp;
+		//it = temp;
 	}
 }
 
 
 
 template <typename T>
-typename ListP<T>::iterator ListP<T>::begin() const
+typename ListP<T>::iterator& ListP<T>::begin() const
 {
 	return list->next;
 }
 
 
 template <typename T>
-bool ListP<T>::end(iterator& it) const
+bool ListP<T>::end(iterator it) const
 {
 	return (it == list);
 }
@@ -199,7 +219,7 @@ bool ListP<T>::IsEmpty() const
 
 
 template <typename T>
-typename ListP<T>::iterator ListP<T>::Next(iterator& it) const
+typename ListP<T>::iterator& ListP<T>::Next(iterator& it) const
 {
 	return it->next;
 }
