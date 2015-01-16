@@ -57,7 +57,10 @@ ListPriorityQueue<T, P>::ListPriorityQueue(PriorityOrder order)
 template <typename T, typename P>
 ListPriorityQueue<T, P>::~ListPriorityQueue()
 {
+	while (!this->IsEmpty())
+		this->RemoveHighest();
 
+	delete m_list;
 }
 
 template <typename T, typename P>
