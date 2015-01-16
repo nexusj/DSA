@@ -5,6 +5,7 @@
 #include "QueueP.h"
 #include "PointerBinTree.h"
 #include "ListNTree.h"
+#include "DynamicNTree.h"
 #include "ListPriorityQueue.h"
 #include "GrafoList.h"
 
@@ -13,6 +14,23 @@
 int main(int argc, char** argv)
 {
 	using namespace std;
+
+	DynamicNTree<int> dT;
+	dT.AddRoot();
+	dT.AddRoot();
+	auto rt = dT.root();
+	dT.WriteNode(rt, 1);
+	dT.AddFirstChild(rt, 2);
+	rt = dT.FirstChild(rt);
+	dT.AddBrother(rt, 3);
+	rt = dT.root();
+	rt = dT.FirstChild(rt);
+	dT.AddFirstChild(rt, 4);
+	dT.AddFirstChild(rt, 5);
+	dT.Print();
+
+	
+
 	GrafoList<string, double> G(10);
 
 	NodoG n1, n2, n3, n4, n5, n6;
