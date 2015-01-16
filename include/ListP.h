@@ -40,15 +40,7 @@ class ListP
 		T elem;
 		ICell* next;
 
-		bool operator==(const ICell& other) const
-		{
-			return(elem == other.elem && next == other.next);
-		}
-
-		bool operator<(const ICell& other) const
-		{
-			return false;
-		}
+		
 	};
 
 	public:
@@ -67,13 +59,7 @@ class ListP
 		T& Read(iterator&) const;
 		T& operator[](const int& v);
 		const T& operator[](const int& v) const;
-		bool operator<(const ListP& other) const
-		{
-			return false;
-		}
 		
-
-
 
 	private:
 		iterator list;
