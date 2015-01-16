@@ -45,7 +45,7 @@ class INTree
 		virtual void Print() const;
 
 	private:
-		virtual void SubPrint(const N) const;
+		virtual void SubPrint(const N&) const = 0;
 
 };
 
@@ -61,60 +61,6 @@ void INTree<T, N>::Print() const
 }
 
 
-
-template <typename T, typename N>
-void INTree<T, N>::SubPrint(const N n) const
-{
-	std::cout << "[ ";
-	if (!IsLeaf(n))
-	{
-		std::cout << ReadNode(n) << " : ";
-		ListP<N>::iterator it = n->children->begin();
-
-		while (!n->children->end(it))
-		{
-			std::cout << ReadNode(n->children->Read(it)) << " ";
-
-			if (!IsLeaf(n->children->Read(it)))
-			{
-				N u = FirstChild(n);
-				ListP<N>::iterator brother = u->children->begin();
-
-				std::cout << "[ ";
-				while (!u->children->end(brother))
-				{
-					
-					if (!IsLeaf(u->children->Read(brother)))
-						SubPrint(u->children->Read(brother));
-					else
-						std::cout << ReadNode(u->children->Read(brother)) << " ";
-
-					brother = u->children->Next(brother);
-				}
-				std::cout << "] ";
-			}
-				
-			
-			it = n->children->Next(it);
-		}
-	}
-	else
-		std::cout << ReadNode(n) << " ";
-// 	if (!LastSibling(n))
-// 	{
-// 		N p = parent(n);
-// 		ListP<N>::iterator brother = p->children->begin();
-// 
-// 		while (!p->children->end(brother))
-// 		{
-// 			std::cout << ReadNode(n->children->Read(brother)) << " ";
-// 			brother = n->children->Next(brother);
-// 		}
-// 		
-// 	}
-
-	std::cout << "] " ;
-}
 
 template <typename T, typename N>
 std::ostream& operator<<(std::ostream &os, const INTree<T, N> &t)
