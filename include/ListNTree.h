@@ -200,9 +200,23 @@ void ListNTree<T>::AddFirstSubTree(Node u, INTree<T,Node>& t)
 }
 
 template<typename T>
-void ListNTree<T>::AddSubTree(Node, INTree&)
+void ListNTree<T>::AddSubTree(Node u , INTree& t)
 {
+	if (!this->IsEmpty() && !t.IsEmpty())
+	{
 
+		Node v = t.root();
+		Node m;
+		ListP<Node>::iterator it = v->children->begin();
+
+
+		AddBrother(u, v->e);
+		m = NextSibling(u);
+		it = v->children->Next(it);
+		m_AddFirstSubTree(m, v, it);
+
+
+	}
 }
 
 template<typename T>
@@ -301,55 +315,79 @@ void ListNTree<T>::m_AddFirstSubTree(Node u, Node v,typename ListP<Node>::iterat
 template <typename T>
 void ListNTree<T>::SubPrint(const Node& n) const
 {
-	std::cout << "[ ";
+	
 	if (!IsLeaf(n))
 	{
-		std::cout << ReadNode(n) << " : ";
+		
+		std::cout << "[ " <<  ReadNode(n) << " : ";
 		ListP<Node>::iterator it = n->children->begin();
 
 		while (!n->children->end(it))
 		{
-			std::cout << ReadNode(n->children->Read(it)) << " ";
+			
 
 			if (!IsLeaf(n->children->Read(it)))
 			{
-				Node u = FirstChild(n);
-				ListP<Node>::iterator brother = u->children->begin();
-
-				std::cout << "[ ";
-				while (!u->children->end(brother))
-				{
-
-					if (!IsLeaf(u->children->Read(brother)))
-						SubPrint(u->children->Read(brother));
-					else
-						std::cout << ReadNode(u->children->Read(brother)) << " ";
-
-					brother = u->children->Next(brother);
-				}
-				std::cout << "] ";
+				SubPrint(n->children->Read(it));
+// 				Node u = FirstChild(n->children->Read(it));
+// 				Node p = parent(u);
+// 				ListP<Node>::iterator brother = p->children->begin();
+// 				while (!p->children->end(brother))
+// 				{
+// 
+// 					SubPrint(p->children->Read(brother));
+// 
+// 					brother = p->children->Next(brother);
+// 				}
+				
+// 				while (!p->children->end(brother))
+// 				{
+// 
+// 					if (!IsLeaf(p->children->Read(brother)))
+// 						SubPrint(p->children->Read(brother));
+// 					else
+// 						std::cout << ReadNode(p->children->Read(brother)) << " ";
+// 
+// 					brother = p->children->Next(brother);
+// 				}
+// 				if (!IsLeaf(u))
+// 				{
+// 					ListP<Node>::iterator brother = u->children->begin();
+// 					std::cout << ReadNode(u) << " ";
+// 					
+// 					while (!u->children->end(brother))
+// 					{
+// 
+// 						if (!IsLeaf(u->children->Read(brother)))
+// 							SubPrint(u->children->Read(brother));
+// 						else
+// 							std::cout << ReadNode(u->children->Read(brother)) << " ";
+// 
+// 						brother = u->children->Next(brother);
+// 					}
+// 				}
+// 				else if (!LastSibling(u))
+// 				{
+// 					Node p = parent(u);
+// 					next = p->children->begin();
+// 					while (!p->children->end(next))
+// 					{
+// 						std::cout << ReadNode(p->children->Read(next)) << " ";
+// 						next = p->children->Next(next);
+// 					}
+// 				}
+				
 			}
+			else
+				std::cout << ReadNode(n->children->Read(it)) << " ";
 
 
 			it = n->children->Next(it);
 		}
-	}
-	else
-		std::cout << ReadNode(n) << " ";
-	// 	if (!LastSibling(n))
-	// 	{
-	// 		N p = parent(n);
-	// 		ListP<N>::iterator brother = p->children->begin();
-	// 
-	// 		while (!p->children->end(brother))
-	// 		{
-	// 			std::cout << ReadNode(n->children->Read(brother)) << " ";
-	// 			brother = n->children->Next(brother);
-	// 		}
-	// 		
-	// 	}
 
-	std::cout << "] ";
+		std::cout << "] ";
+	}
+
 }
 
 #endif

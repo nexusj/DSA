@@ -83,7 +83,7 @@ int main(int argc, char** argv)
 		cout << G.leggiEtichetta(*(L.read(p))).c_str() << " ";
 		p = L.next(p);
 	}
-
+	cout << endl;
 	auto arc = G.esisteArco(a);
 	auto existnode = G.esisteNodo(*(new NodoG(5)));
 	ListS<int> t;
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 	pQ.Add(new IQueueNode<int, int>(10, 10));
 	pQ.Add(new IQueueNode<int, int>(20, 6));
 
-	pQ.Print();
+	//pQ.Print();
 	_tmp.AddRoot();
 	_t = _tmp.root();
 	_tmp.WriteNode(_t, 10);
@@ -129,7 +129,7 @@ int main(int argc, char** argv)
 	nTree.AddFirstChild(m, 5);
 	nTree.Print();
 
-	nTree.AddFirstSubTree(m, _tmp);
+	nTree.AddSubTree(m, _tmp);
 	nTree.Print();
 	PointerBinTree<int>::Node n;
 	B.AddRoot();
