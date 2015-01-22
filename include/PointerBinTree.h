@@ -120,13 +120,13 @@ typename PointerBinTree<T>::Node PointerBinTree<T>::parent(Node n) const
 template<typename T>
 typename PointerBinTree<T>::Node PointerBinTree<T>::left(Node n) const
 {
-	return !EmptyLeft(n) ? n->left : throw NullNode();
+	return !EmptyLeft(n) ? n->left : NULL;
 }
 
 template<typename T>
 typename PointerBinTree<T>::Node PointerBinTree<T>::right(Node n) const
 {
-	return !EmptyRight(n) ? n->right : throw NullNode();
+	return !EmptyRight(n) ? n->right : NULL;
 }
 
 template<typename T>
@@ -154,17 +154,28 @@ void PointerBinTree<T>::erase(Node n)
 		{
 			Node p = parent(n);
 			if (p->left == n)
+			{
 				delete p->left;
+				p->left = NULL;
+			}
+				
 			else
+			{
 				delete p->right;
+				p->right = NULL;
+			}
+				
 		}
 		else
+		{
 			delete m_root->left;
+			m_root->left = NULL;
+		}
+			
 
 		m_nodes--;
 	}
-	else
-		throw NullNode();
+	
 }
 
 template<typename T>
@@ -190,6 +201,7 @@ void PointerBinTree<T>::AddRoot()
 		PointerBinTree<T>::Node n = new INode<T>;
 		n->left = NULL;
 		n->right = NULL;
+		n->parent = n;
 		m_root->left = n;
 		m_nodes++;
 	}
