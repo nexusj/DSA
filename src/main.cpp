@@ -7,6 +7,7 @@
 #include "ListNTree.h"
 #include "DynamicNTree.h"
 #include "ListPriorityQueue.h"
+#include "TreePriorityQueue.h"
 #include "GrafoList.h"
 
 
@@ -14,6 +15,19 @@
 int main(int argc, char** argv)
 {
 	using namespace std;
+	TreePriorityQueue<int, int> treeQueue(PriorityOrder::ASCENDING);
+
+	treeQueue.Add(new IQueueNode<int, int>(0, 5));
+	treeQueue.Add(new IQueueNode<int, int>(1, 10));
+	treeQueue.Add(new IQueueNode<int, int>(2, 4));
+	treeQueue.Add(new IQueueNode<int, int>(3, 8));
+	treeQueue.Add(new IQueueNode<int, int>(4, 7));
+	treeQueue.Add(new IQueueNode<int, int>(10, 10));
+	treeQueue.Add(new IQueueNode<int, int>(20, 6));
+	treeQueue.RemoveHighest();
+	auto hgh = treeQueue.PullHighest();
+
+	treeQueue.Print();
 
 	DynamicNTree<int> dT;
 	dT.AddRoot();
@@ -107,7 +121,7 @@ int main(int argc, char** argv)
 	pQ.Add(new IQueueNode<int, int>(10, 10));
 	pQ.Add(new IQueueNode<int, int>(20, 6));
 
-	//pQ.Print();
+	pQ.Print();
 	_tmp.AddRoot();
 	_t = _tmp.root();
 	_tmp.WriteNode(_t, 10);
