@@ -101,6 +101,10 @@ ListP<T>::ListP(const ListP<T>& l)
 template <typename T>
 ListP<T>::~ListP()
 {
+	for (auto& it = begin(); !end(it); it = Next(it))
+	{
+		RemoveAt(it);
+	}
 	delete list;
 }
 
