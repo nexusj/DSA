@@ -24,6 +24,8 @@
 #ifndef _IPRIORITYQUEUE_HEADER_
 #define  _IPRIORITYQUEUE_HEADER_
 
+
+
 enum class PriorityOrder
 {
 	ASCENDING,
@@ -54,7 +56,15 @@ class IQueueNode
 			}
 			return *this;
 		}
-
+		IQueueNode& operator=(IQueueNode&& other)
+		{
+			if (this != &other)
+			{
+				m_value = other.m_value;
+				m_priority = other.m_priority;
+			}
+			return *this;
+		}
 		bool operator==( const IQueueNode& rhs)
 		{
 			return (m_value == rhs.m_value && m_priority == rhs.m_value);
@@ -85,6 +95,18 @@ class IQueueNode
 		{
 			return !(this->m_priority < rhs.m_priority);
 		}
+
+	    void swap(IQueueNode<T,P>& b)
+		{
+			using std::swap;
+			swap(this->m_priority, b.m_priority);
+			swap(this->m_value, b.m_value);
+		}
+
+		void copy(IQueueNode<T, P>& b)
+		{
+			*this = b;
+		}
 };
 
 template <typename T, typename P>
@@ -105,11 +127,11 @@ void IPriorityQueue<T, P>::Print()
 {
 	if (!this->IsEmpty())
 	{
-		NodeQ e = this->PullHighest();
+		auto e = *this->PullHighest();
 		RemoveHighest();
-		std::cout << e->Value() << " ";
+		std::cout << e.Value() << " ";
 		Print();
-		this->Add(e);
+		this->Add(new IQueueNode<T,P>(e));
 	}
 }
 
