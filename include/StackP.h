@@ -96,7 +96,7 @@ T& StackP<T>::Pop()
 	{
 		temp = head->next;
 		e = temp->elem;
-		head->next = head->next->next;
+		head->next = temp->next;
 		m_size--;
 		delete temp;
 	}
