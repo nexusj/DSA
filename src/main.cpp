@@ -8,13 +8,29 @@
 #include "DynamicNTree.h"
 #include "ListPriorityQueue.h"
 #include "TreePriorityQueue.h"
-#include "GrafoList.h"
+#include "ListGraph.h"
+//#include "MatrixGraph.h"
 
 
 
 int main(int argc, char** argv)
 {
 	using namespace std;
+// 	MatrixGraph<int, double> mgraph(10);
+// 	MatrixGraph<int, double>::NodePosition mn1(new IGraphNode<int, double>(2)), mn2(new IGraphNode<int, double>(3));
+// 	mgraph.AddNode(mn1);
+// 	mgraph.AddNode(mn2);
+// 	mgraph.AddEdge(mn1, mn2, 1.2);
+// 	mgraph.write(mn1, 55);
+// 	auto mlist = mgraph.read(mn1);
+	ListGraph<int, double> lgraph;
+	ListGraph<int, double>::Node ln1(new IGraphNode<int, double>(2)), ln2(new IGraphNode<int, double>(3));
+	lgraph.AddNode(ln1);
+	lgraph.AddNode(ln2);
+	lgraph.AddEdge(ln1, ln2, 2.3);
+	auto rweight = lgraph.Neighbours(ln1);
+
+
 	TreePriorityQueue<int, int> treeQueue(PriorityOrder::ASCENDING);
 
 	treeQueue.Add(new IQueueNode<int, int>(0, 5));
@@ -43,63 +59,6 @@ int main(int argc, char** argv)
 	dT.AddFirstChild(rt, 5);
 	dT.Print();
 
-	
-
-	GrafoList<string, double> G(10);
-
-	NodoG n1, n2, n3, n4, n5, n6;
-
-	G.insNodo(n1);
-	G.scriviEtichetta(n1, "a");
-	G.insNodo(n2);
-	G.scriviEtichetta(n2, "b");
-	G.insNodo(n3);
-	G.scriviEtichetta(n3, "c");
-	G.insNodo(n4);
-	G.scriviEtichetta(n4, "d");
-	G.insNodo(n5);
-	G.scriviEtichetta(n5, "e");
-	G.insNodo(n6);
-	G.scriviEtichetta(n6, "f");
-
-
-
-	G.insArco(n1, n2, 1.0);
-	G.insArco(n1, n3, 0.9);
-	G.insArco(n1, n5, 0.3);
-	G.insArco(n2, n4, 0.1);
-	G.insArco(n2, n6, 0.2);
-	G.insArco(n3, n4, 1.0);
-	G.insArco(n3, n6, 0.7);
-	G.insArco(n4, n1, 0.5);
-	G.insArco(n5, n2, 0.4);
-	G.insArco(n5, n3, 0.2);
-	G.insArco(n6, n4, 0.1);
-
-	cout << "\nNumNodi " << G.numNodi();
-	cout << "\nNumArchi " << G.numArchi();
-
-	G.cancNodo(n6);
-
-	cout << "\nNumNodi " << G.numNodi() << endl;
-
-	GrafoList<string, double>::ListaNodi L = G.Adiacenti(n1);
-
-	GrafoList<string, double>::ListaNodiPos p;
-	GrafoList<string, double>::Arco a;
-
-	a.nodo1 = n1;
-	a.nodo2 = n4;
-
-	cout << "Adiacenti di " << G.leggiEtichetta(n1).c_str() << "--> ";
-	p = L.begin();
-	while (!L.end(p)){
-		cout << G.leggiEtichetta(*(L.read(p))).c_str() << " ";
-		p = L.next(p);
-	}
-	cout << endl;
-	auto arc = G.esisteArco(a);
-	auto existnode = G.esisteNodo(*(new NodoG(5)));
 	ListS<int> t;
 	ListP<int> l;
 	StackP<int> s;
