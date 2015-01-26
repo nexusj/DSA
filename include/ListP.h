@@ -39,7 +39,7 @@ class ListP
 	{
 		T elem;
 		ICell* next;
-
+		
 		
 	};
 
@@ -57,6 +57,7 @@ class ListP
 		bool IsEmpty() const;
 		iterator& Next(iterator&) const;
 		T& Read(iterator&) const;
+		int Length() const;
 		T& operator[](const int& v);
 		const T& operator[](const int& v) const;
 		
@@ -68,8 +69,6 @@ class ListP
 
 
 };
-
-
 
 
 template <typename T>
@@ -87,7 +86,7 @@ ListP<T>::ListP(const ListP<T>& l)
 	list = new ICell;
 	list->next = list;
 
-	m_size = l.m_size;
+	m_size = 0;
 
 	iterator it = l.begin();
 
@@ -222,7 +221,11 @@ T& ListP<T>::Read(iterator& it) const
 	return it->elem;
 }
 
-
+template <typename T>
+int ListP<T>::Length() const
+{
+	return m_size;
+}
 
 template <typename T>
 T& ListP<T>::operator[](const int& v)
