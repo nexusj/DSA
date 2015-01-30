@@ -90,6 +90,8 @@ int main(int argc, char** argv)
 
 	_tmp.Print();
 
+	
+
 	nTree.AddRoot();
 	m = nTree.root();
 	nTree.WriteNode(m, 1);
@@ -104,6 +106,7 @@ int main(int argc, char** argv)
 
 	nTree.AddSubTree(m, _tmp);
 	nTree.Print();
+	auto depth = nTree.Depth(nTree.root());
 	PointerBinTree<int>::Node n;
 	B.AddRoot();
 	n = B.root();

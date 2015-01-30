@@ -61,6 +61,8 @@ class ListNTree : public INTree < T, INodes<T>* >
 
 		void AddFirstChild(Node,T);
 		void AddBrother(Node,T);
+
+		int Depth(Node) const;
 		
 
 	private:
@@ -285,6 +287,38 @@ void ListNTree<T>::AddBrother(Node n, T e)
 
 
 template<typename T>
+int ListNTree<T>::Depth(Node u) const
+{
+	int max = 0, current = 0;
+	Node v, p;
+
+	if (this->IsLeaf(u))
+		return 0;
+	else
+	{
+		v = FirstChild(u);
+		p = parent(v);
+		auto it = p->children->begin();
+
+		max = Depth(v);
+
+		while (!p->children->end(it))
+		{
+			v = p->children->Read(it);
+			current = Depth(v);
+			if (max <= current)
+				max = current;
+			it = p->children->Next(it);
+		}
+
+		max++;
+	}
+
+	return max;
+}
+
+
+template<typename T>
 void ListNTree<T>::m_AddFirstSubTree(Node u, Node v,typename ListP<Node>::iterator it)
 {
 	Node n;
@@ -389,5 +423,7 @@ void ListNTree<T>::SubPrint(const Node& n) const
 	}
 
 }
+
+
 
 #endif
