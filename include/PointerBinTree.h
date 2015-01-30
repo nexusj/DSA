@@ -62,6 +62,7 @@ class PointerBinTree : public Bin_tree < T,INode<T>* >
 		void AddLeft(Node);
 		void AddRight(Node);
 
+		int Depth(Node) const;
 
 	private:
 		int m_nodes; //number of nodes
@@ -249,6 +250,34 @@ void PointerBinTree<T>::AddRight(Node n)
 		tmp->right = NULL;
 		m_nodes++;
 	}
+}
+
+
+template<typename T>
+int PointerBinTree<T>::Depth(Node u) const
+{
+	int max = 0, current = 0;
+	Node v;
+
+	if (EmptyLeft(u) && EmptyRight(u))
+		return 0;
+	else
+	{
+		v = left(u);
+		max = Depth(v);
+
+		if (!EmptyLeft(v))
+			current = Depth(left(v));
+		else if (!EmptyRight(v))
+			current = Depth(right(v));
+
+		if (max <= current)
+			max = current;
+
+		max++;
+	}
+
+	return max;
 }
 
 #endif
