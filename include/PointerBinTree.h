@@ -26,6 +26,7 @@
 
 #include "Bin_Tree.h"
 #include "exceptions.h"
+#include "QueueP.h"
 
 template <typename T>
 struct INode
@@ -63,6 +64,7 @@ class PointerBinTree : public Bin_tree < T,INode<T>* >
 		void AddRight(Node);
 
 		int Depth(Node) const;
+		int Breadth(Node) const;
 
 	private:
 		int m_nodes; //number of nodes
@@ -278,6 +280,42 @@ int PointerBinTree<T>::Depth(Node u) const
 	}
 
 	return max;
+}
+
+
+template<typename T>
+int PointerBinTree<T>::Breadth(Node u) const
+{
+	int max = 0, current = 0;
+	QueueP<Node> Q;
+	Q.Push(u);
+
+	while (!Q.IsEmpty())
+	{
+		auto e = Q.Pop();
+		
+
+		if (!EmptyLeft(e))
+		{
+			current = Breadth(left(e));
+			Q.Push(left(e));
+		}
+			
+			
+		if (!EmptyRight(e))
+		{
+			current = Breadth(right(e));
+			Q.Push(right(e));
+		}
+
+
+		if (max <= current)
+			max = current;
+
+	}
+
+
+	return ++max;
 }
 
 #endif

@@ -116,11 +116,16 @@ int main(int argc, char** argv)
 	B.write(B.left(n), 2);
 	B.AddLeft(B.left(n));
 	B.write(B.left(B.left(n)), 4);
+	B.AddRight(B.left(n));
+	B.write(B.right(B.left(n)), 5);
 	B.write(B.right(n), 3);
+	B.AddLeft(B.right(n));
+	B.write(B.left(B.right(n)), 6);
+
 
 	std::cout << B;
 	auto depthbin = B.Depth(B.root());
-	
+	auto breadth = B.Breadth(B.root());
 	q.Push(1);
 	q.Push(2);
 	q.Push(3);
