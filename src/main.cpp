@@ -118,9 +118,30 @@ int main(int argc, char** argv)
 	B.write(B.left(B.left(n)), 4);
 	B.AddRight(B.left(n));
 	B.write(B.right(B.left(n)), 5);
+
+	B.AddLeft(B.left(B.left(n)));
+	B.write(B.left(B.left(B.left(n))),8);
+	B.AddRight(B.left(B.left(n)));
+	B.write(B.right(B.left(B.left(n))), 9);
+	B.AddLeft(B.right(B.left(n)));
+	B.write(B.left(B.right(B.left(n))), 10);
+	B.AddRight(B.right(B.left(n)));
+	B.write(B.right(B.right(B.left(n))), 11);
+
 	B.write(B.right(n), 3);
 	B.AddLeft(B.right(n));
 	B.write(B.left(B.right(n)), 6);
+	B.AddRight(B.right(n));
+	B.write(B.right(B.right(n)), 7);
+
+	B.AddLeft(B.left(B.right(n)));
+	B.write(B.left(B.left(B.right(n))), 12);
+	B.AddRight(B.left(B.right(n)));
+	B.write(B.right(B.left(B.right(n))), 13);
+	B.AddLeft(B.right(B.right(n)));
+	B.write(B.left(B.right(B.right(n))), 14);
+	B.AddRight(B.right(B.right(n)));
+	B.write(B.right(B.right(B.right(n))), 15);
 
 
 	std::cout << B;
