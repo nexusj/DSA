@@ -42,6 +42,7 @@ class QueueP
 		T& Pop();
 		void Push(T);
 		void Print();
+		int Length() const;
 
 	private:
 		iterator head, tail;
@@ -143,6 +144,13 @@ void QueueP<T>::Print()
 	{
 		this->Push(q.Pop());
 	}
+}
+
+
+template <typename T>
+int QueueP<T>::Length() const
+{
+	return m_size;
 }
 
 #endif
