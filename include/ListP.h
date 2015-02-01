@@ -60,6 +60,7 @@ class ListP
 		int Length() const;
 		T& operator[](const int& v);
 		const T& operator[](const int& v) const;
+		bool Contains(T) const;
 		
 
 	private:
@@ -270,6 +271,17 @@ std::ostream& operator<<(std::ostream& os, const ListP<T>& l)
 	std::cout << " ]" << std::endl;
 
 	return os;
+}
+
+
+template <typename T>
+bool ListP<T>::Contains(T e) const
+{
+	for (auto it = this->begin(); !this->end(it); it = this->Next(it))
+		if (this->Read(it) == e)
+			return true;
+
+	return false;
 }
 
 #endif
