@@ -28,6 +28,7 @@
 #include "exceptions.h"
 #include "QueueP.h"
 
+
 template <typename T>
 struct INode
 {
@@ -286,36 +287,31 @@ int PointerBinTree<T>::Depth(Node u) const
 template<typename T>
 int PointerBinTree<T>::Breadth(Node u) const
 {
-	int max = 0, current = 0;
+	int max = 0, current = 1;
 	QueueP<Node> Q;
 	Q.Push(u);
+	
 
 	while (!Q.IsEmpty())
 	{
 		auto e = Q.Pop();
 		
-
-		if (!EmptyLeft(e))
-		{
-			current = Breadth(left(e));
-			Q.Push(left(e));
-		}
+			if (!EmptyLeft(e))
+				Q.Push(left(e));
+				if (!EmptyRight(e))
+					Q.Push(right(e));	
 			
-			
-		if (!EmptyRight(e))
-		{
-			current = Breadth(right(e));
-			Q.Push(right(e));
-		}
+			current--;
 
-
-		if (max <= current)
-			max = current;
-
+			if (current == 0)
+			{
+				current = Q.Length();
+				if (max <= current) max = current;
+			}			
 	}
 
 
-	return ++max;
+	return max;
 }
 
 #endif
