@@ -101,10 +101,9 @@ ListP<T>::ListP(const ListP<T>& l)
 template <typename T>
 ListP<T>::~ListP()
 {
+	if (!this->IsEmpty())
 	for (auto& it = begin(); !end(it); it = Next(it))
-	{
 		RemoveAt(it);
-	}
 	delete list;
 }
 
@@ -234,7 +233,7 @@ T& ListP<T>::operator[](const int& v)
 	iterator it = this->begin();
 	int i = 0;
 
-	for (; i < v; it = this->Next(it))
+	for (; i < v-1; it = this->Next(it))
 	{
 		i++;
 	}

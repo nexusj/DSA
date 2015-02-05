@@ -35,14 +35,13 @@ struct IGraphNode
 		ListP<IEdge<IGraphNode<T,W>*,W>*>* m_neighbours;
 
 	public:
-		IGraphNode() : m_neighbours(new ListP<IEdge<IGraphNode<T,W>*, W>*>){}
+		IGraphNode() :m_value(0), m_neighbours(new ListP<IEdge<IGraphNode<T,W>*, W>*>){}
 		IGraphNode(T value) : m_value(value), m_neighbours(new ListP<IEdge<IGraphNode<T, W>*, W>*>) {}
 		~IGraphNode()
 		{
-			for (auto& it = m_neighbours->begin(); !m_neighbours->end(it); it = m_neighbours->Next(it))
-			{
-				m_neighbours->RemoveAt(it);
-			}
+			
+				for (auto& it = m_neighbours->begin(); !m_neighbours->end(it); it = m_neighbours->Next(it))
+					m_neighbours->RemoveAt(it);
 
 			delete m_neighbours;
 		}
@@ -85,8 +84,8 @@ class ListGraph : public IGraph < T, W, IGraphNode<T, W>* >
 		bool ExistNode(Node) const;
 		bool ExistEdge(Node, Node) const;
 		ListNode Neighbours(Node) const;
-		ListNode Nodes() const;
-		ListEdge Edges() const;
+		ListNode& Nodes() const;
+		ListEdge& Edges() const;
 		T read(Node) const;
 		void write(Node, T) const;
 		Weight ReadWeight(Node, Node) const;
@@ -148,8 +147,18 @@ void ListGraph<T, W>::AddEdge(Node a, Node b, Weight w)
 {
 	if (!ExistEdge(a,b))
 	{
+		bool found = false;
+
 		Edge*  e = new Edge(a,b,w);
-		m_nodes->Read(m_nodes->begin())->AddNeighbour(e);
+
+		for (auto it = m_nodes->begin(); !m_nodes->end(it); it = m_nodes->Next(it))
+		{
+			if (m_nodes->Read(it) == a)
+			{
+				m_nodes->Read(it)->AddNeighbour(e);
+				found = true;
+			}
+		}
 		m_edges->Add(e);
 	}
 }
@@ -280,13 +289,13 @@ typename ListGraph<T, W>::ListNode ListGraph<T, W>::Neighbours(Node n) const
 }
 
 template <typename T, typename W>
-typename ListGraph<T, W>::ListNode ListGraph<T, W>::Nodes() const
+typename ListGraph<T, W>::ListNode& ListGraph<T, W>::Nodes() const
 {
 	return *m_nodes;
 }
 
 template <typename T, typename W>
-typename ListGraph<T, W>::ListEdge ListGraph<T, W>::Edges() const
+typename ListGraph<T, W>::ListEdge& ListGraph<T, W>::Edges() const
 {
 	return *m_edges;
 }

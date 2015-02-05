@@ -65,8 +65,8 @@ class IGraph
 		virtual bool ExistNode(Node) const = 0;
 		virtual bool ExistEdge(Node, Node) const = 0;
 		virtual ListP <Node> Neighbours(Node) const = 0;
-		virtual ListP <Node> Nodes() const = 0;
-		virtual ListP <Edge*> Edges() const = 0;
+		virtual ListP <Node>& Nodes() const = 0;
+		virtual ListP <Edge*>& Edges() const = 0;
 		virtual T read(Node) const = 0;
 		virtual void write(Node, T) const = 0;
 		virtual Weight ReadWeight(Node, Node) const = 0;
