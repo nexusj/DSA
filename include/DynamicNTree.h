@@ -66,6 +66,7 @@ class DynamicNTree : public INTree < T, IDynamicNode<T>* >
 		Node m_root;
 		int m_nodes;
 		void SubPrint(const Node&) const;
+		void m_AddFirstSubTree(Node, Node);
 };
 
 template <typename T>
@@ -189,8 +190,10 @@ typename DynamicNTree<T>::Node DynamicNTree<T>::NextSibling(Node n) const
 					return n->Read(n->begin());
 				}
 
-				itsecond = second->Next(itsecond);
 				it = p->children->Next(it);
+				second = p->children->Read(it);
+				itsecond = second->begin();
+				
 			}
 		}
 	
@@ -199,15 +202,35 @@ typename DynamicNTree<T>::Node DynamicNTree<T>::NextSibling(Node n) const
 }
 
 template <typename T>
-void DynamicNTree<T>::AddFirstSubTree(Node n, INTree& t)
+void DynamicNTree<T>::AddFirstSubTree(Node u, INTree& t)
 {
+	if (!this->IsEmpty() && !t.IsEmpty())
+	{
+
+		Node v = t.root();
+		Node m;
+		AddFirstChild(u, v->e);
+		m = FirstChild(u);
+		
+		m_AddFirstSubTree(m, v);
+	}
 
 }
 
 template <typename T>
-void DynamicNTree<T>::AddSubTree(Node n, INTree& t)
+void DynamicNTree<T>::AddSubTree(Node u, INTree& t)
 {
+	if (!this->IsEmpty() && !t.IsEmpty())
+	{
 
+		Node v = t.root();
+		Node m;
+
+		AddBrother(u, v->e);
+		m = NextSibling(u);
+		
+		m_AddFirstSubTree(m, v);
+	}
 }
 
 template <typename T>
@@ -301,10 +324,11 @@ void DynamicNTree<T>::AddBrother(Node n, T e)
 template <typename T>
 void DynamicNTree<T>::SubPrint(const Node& n) const
 {
-	std::cout << "[ ";
+	
 	if (!IsLeaf(n))
 	{
-		std::cout << ReadNode(n) << " : ";
+
+		std::cout << "[ " << ReadNode(n) << " : ";
 		auto it = n->children->begin();
 		auto second = n->children->Read(it);
 		auto itsecond = second->begin();
@@ -312,30 +336,34 @@ void DynamicNTree<T>::SubPrint(const Node& n) const
 
 		while (!n->children->end(it))
 		{
-			std::cout << ReadNode(_node) << " ";
+			
 
 			if (!IsLeaf(_node))
 			{
-				Node u = FirstChild(n);
-				auto brother = u->children->begin();
-				auto nbrother = u->children->Read(brother);
-				auto itnbrother = nbrother->begin();
-				auto _m = nbrother->Read(itnbrother);
 
-				std::cout << "[ ";
-				while (!u->children->end(brother))
-				{
-
-					if (!IsLeaf(_m))
-						SubPrint(_m);
-					else
-						std::cout << ReadNode(_m) << " ";
-
-					brother = u->children->Next(brother);
-					_m = NextSibling(_m);
-				}
-				std::cout << "] ";
-			}
+				SubPrint(_node);
+// 				Node u = FirstChild(n);
+// 				auto brother = u->children->begin();
+// 				auto nbrother = u->children->Read(brother);
+// 				auto itnbrother = nbrother->begin();
+// 				auto _m = nbrother->Read(itnbrother);
+// 
+// 				std::cout << "[ ";
+// 				while (!u->children->end(brother))
+// 				{
+// 
+// 					if (!IsLeaf(_m))
+// 						SubPrint(_m);
+// 					else
+// 						std::cout << ReadNode(_m) << " ";
+// 
+// 					brother = u->children->Next(brother);
+// 					_m = NextSibling(_m);
+// 				}
+// 				std::cout << "] ";
+ 			}
+			else
+				std::cout << ReadNode(_node) << " ";
 
 
 			it = n->children->Next(it);
@@ -347,6 +375,33 @@ void DynamicNTree<T>::SubPrint(const Node& n) const
 		std::cout << ReadNode(n) << " ";
 
 	std::cout << "] ";
+}
+
+
+template <typename T>
+void DynamicNTree<T>::m_AddFirstSubTree(Node u, Node v)
+{
+	Node n;
+	if (!IsLeaf(v))
+	{
+		this->AddFirstChild(u, ReadNode(FirstChild(v)));
+		u = this->FirstChild(u);
+
+		do
+		{
+			n = this->FirstChild(v);
+			if (!IsLeaf(n))
+			{
+				m_AddFirstSubTree(u, n);
+			}
+
+			this->AddBrother(u, ReadNode(NextSibling(n)));
+			u = NextSibling(u);
+			
+		}while (!LastSibling(u));
+
+
+	}
 }
 
 
