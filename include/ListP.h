@@ -57,6 +57,7 @@ class ListP
 		bool IsEmpty() const;
 		iterator& Next(iterator&) const;
 		T& Read(iterator&) const;
+		void Write(const T&, iterator);
 		int Length() const;
 		T& operator[](const int& v);
 		const T& operator[](const int& v) const;
@@ -220,6 +221,14 @@ T& ListP<T>::Read(iterator& it) const
 {
 	return it->elem;
 }
+
+
+template <typename T>
+void ListP<T>::Write(const T& e, iterator it)
+{
+	it->elem = e;
+}
+
 
 template <typename T>
 int ListP<T>::Length() const
