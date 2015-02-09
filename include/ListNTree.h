@@ -69,7 +69,6 @@ class ListNTree : public INTree < T, INodes<T>* >
 		Node m_root;
 		int m_nodes;
 		void m_AddFirstSubTree(Node,Node,typename ListP<Node>::iterator);
-		void m_AddSubTree(Node,Node );
 		void SubPrint(const Node&) const;
 };
 
