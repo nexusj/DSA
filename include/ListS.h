@@ -56,6 +56,9 @@ public:
 	void Remove(T e);
 	iterator begin() const;
 	iterator end() const;
+	iterator Next(iterator) const;
+	T& Read(iterator) const;
+	void Write(const T&, iterator);
 	bool IsEmpty() const;
 	T& operator[](const int& v);
 	const T& operator[](const int& v) const;
@@ -270,6 +273,28 @@ typename ListS<T>::iterator ListS<T>::end() const
 	
 	return iter;
 }
+
+
+template<class T>
+typename ListS<T>::iterator ListS<T>::Next(iterator it) const
+{
+	return &m_buffer[it->next];
+}
+
+
+template<class T>
+T& ListS<T>::Read(iterator it) const
+{
+	return it->elem;
+}
+
+
+template<class T>
+void ListS<T>::Write(const T& e, iterator it)
+{
+	it->elem = e;
+}
+
 
 template<class T>
 bool ListS<T>::IsEmpty() const
