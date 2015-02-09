@@ -125,7 +125,8 @@ mypair< K, E>* ChainedHashTable<K,E>::find(const K& the_key) const
 			it = table[b]->Next(it);
 		}
 	}else
-		return NULL;   
+		return NULL;  
+
 	return &table[b]->Read(it); 
 }
 
