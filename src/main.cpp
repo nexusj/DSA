@@ -44,6 +44,7 @@ int main(int argc, char** argv)
 	auto hgh = treeQueue.PullHighest();
 
 	treeQueue.Print();
+	std::cout << std::endl;
 
 	DynamicNTree<int> dT;
 	dT.AddRoot();
@@ -59,6 +60,20 @@ int main(int argc, char** argv)
 	dT.AddFirstChild(rt, 5);
 	dT.Print();
 
+
+	DynamicNTree<int> tempDT;
+	tempDT.AddRoot();
+	auto temproot = tempDT.root();
+	tempDT.WriteNode(temproot, 10);
+	tempDT.AddFirstChild(temproot, 20);
+	temproot = tempDT.FirstChild(temproot);
+	tempDT.AddBrother(temproot, 30);
+
+	tempDT.Print();
+
+	
+	dT.AddSubTree(rt, tempDT);
+	dT.Print();
 	ListS<int> t;
 	ListP<int> l;
 	StackP<int> s;
@@ -172,8 +187,11 @@ int main(int argc, char** argv)
 	first = l.Next(first);
 	l.Add(12);
 	std::cout << l;
-	/*t.Add(1);
+	t.Add(1);
 	t.Add(2);
+	auto firstS = t.begin();
+	firstS = t.Next(firstS);
+	/*t.Add(2);
 	t.Add(3);
 	t.Add(4);
 	t.Add(5);
