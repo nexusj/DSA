@@ -43,7 +43,7 @@ public:
 	virtual bool EmptyLeft(Nodo) const = 0;
 	virtual bool EmptyRight(Nodo) const = 0;
 
-	//virtual void costr(Bin_tree<T,N>);
+	virtual Bin_tree<T,N>& AddSubTree(Bin_tree<T,N>&,Bin_tree<T,N>&);
 	virtual void erase(Nodo) = 0;
 
 	virtual T read(Nodo) const = 0;
@@ -62,9 +62,62 @@ public:
 
 private:
 	virtual void printSubTree(const Nodo) const;
+	virtual void m_AddSubTree(Nodo,Nodo,Bin_tree<T,N>&);
 
 
 };
+
+template <class T, class N>
+Bin_tree<T,N>& Bin_tree<T, N>::AddSubTree(Bin_tree<T, N>& t1, Bin_tree<T, N>& t2)
+{
+	
+	Nodo n1 = t1.root(), n2 = t2.root();
+	this->AddRoot();
+
+	if (!t1.empty())
+	{
+		AddLeft(this->root());
+		if (!t1.EmptyLeft(n1) || !t1.EmptyRight(n1))
+			m_AddSubTree(n1, left(this->root()), t1);
+	}
+		
+
+	if (!t2.empty())
+	{
+		AddRight(this->root());
+		if (!t2.EmptyLeft(n2) || !t2.EmptyRight(n2))
+			m_AddSubTree(n2, right(this->root()), t2);
+	}
+		
+
+	return *this;
+}
+
+
+
+template <class T, class N>
+void Bin_tree<T, N>::m_AddSubTree(Nodo u, Nodo v, Bin_tree<T, N>& t)
+{
+
+
+	if (!t.EmptyLeft(u))
+	{
+		this->AddLeft(v);
+		m_AddSubTree(left(u), left(v), t);
+	}
+
+
+	if (!t.EmptyRight(u))
+	{
+		this->AddRight(v);
+		m_AddSubTree(right(u), right(v), t);
+	}
+	
+
+	this->write(v, t.read(u));
+
+}
+
 
 template <class T, class N>
 void Bin_tree<T, N>::print() const{
