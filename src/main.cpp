@@ -16,6 +16,34 @@
 int main(int argc, char** argv)
 {
 	using namespace std;
+
+	PointerBinTree<int> tree1, tree2, tree3;
+	PointerBinTree<int>::Node n1, n2;
+
+	tree1.AddRoot();
+	n1 = tree1.root();
+	tree1.write(n1, 1);
+	tree1.AddLeft(n1);
+	tree1.write(tree1.left(n1), 2);
+	tree1.AddRight(n1);
+	tree1.write(tree1.right(n1), 3);
+
+	tree1.print();
+
+	tree2.AddRoot();
+	n2 = tree2.root();
+	tree2.write(n2, 4);
+	tree2.AddLeft(n2);
+	tree2.write(tree2.left(n2), 5);
+	tree2.AddRight(n2);
+	tree2.write(tree2.right(n2), 6);
+
+	tree2.print();
+
+	tree3.AddSubTree(tree1, tree2);
+
+	tree3.print();
+
 // 	MatrixGraph<int, double> mgraph(10);
 // 	MatrixGraph<int, double>::NodePosition mn1(new IGraphNode<int, double>(2)), mn2(new IGraphNode<int, double>(3));
 // 	mgraph.AddNode(mn1);
