@@ -5,6 +5,7 @@ Knapsack::Knapsack(int dimension)
 {
 	m_size = dimension;
 	m_free = 0;
+	m_profit = 0;
 	m_buffer = new IData[m_size];
 }
 
@@ -30,6 +31,7 @@ void Knapsack::KnapsackGreedy( int budget)
 		{
 			solution[temp[i]] = 1;
 			cost += m_buffer[temp[i]].Cost();
+			m_profit += m_buffer[temp[i]].Profit();
 		}
 		else
 			solution[i] = 0;
@@ -101,7 +103,7 @@ void Knapsack::PrintInit() const
 
 void Knapsack::PrintSolution(int* solution,int budget) const
 {
-	std::cout << "La soluzione e' (con budget = " << budget << " ) :" << std::endl << std::endl;
+	std::cout << "La soluzione e' (con budget = " << budget << " e ProfittoTotale = "  << m_profit << " ) :"<< std::endl << std::endl;
 
 	for (int i = 0; i < m_size; i++)
 		if (solution[i] == 1)

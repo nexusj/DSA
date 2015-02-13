@@ -55,6 +55,7 @@ private:
 	IData* m_buffer;
 	int m_size;
 	int m_free;
+	int m_profit;
 	void Sort(IData*,int*,int);
 	void Swap(int&, int&);
 	void PrintInit() const;
