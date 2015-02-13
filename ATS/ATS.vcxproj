@@ -78,10 +78,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Knapsack.h" />
     <ClInclude Include="N-Queens.h" />
     <ClInclude Include="StringMatching.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Knapsack.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="N-Queens.cpp" />
   </ItemGroup>
