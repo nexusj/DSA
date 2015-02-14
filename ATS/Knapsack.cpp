@@ -40,7 +40,7 @@ void Knapsack::KnapsackGreedy( int budget)
 	
 	PrintSolution(solution, budget);
 
-	delete[] temp;
+	delete[] temp, solution;
 
 }
 
